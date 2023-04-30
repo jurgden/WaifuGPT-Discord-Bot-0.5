@@ -33,49 +33,6 @@ class MyCLient(discord.Client):
 
         print(command, user_message)
 
-      elif message.content.startswith("/ti"):
-        # Extract the field names and number of rows from the user's message
-        table_info = message.content.split("/ti ")[1]
-        field_names = table_info.split(" fields: ")[1].split(";")
-        num_rows = int(table_info.split("rows: ")[1].split(";")[0])
-
-        # Ask the user for the data to be filled in the cells
-        cell_data = []
-        for i in range(num_rows):
-          row_data = []
-          for field_name in field_names:
-            await message.channel.send(
-              f"Please provide data for field {field_name} in row {i + 1}:")
-            data = await self.wait_for("message")
-            row_data.append(data.content)
-          cell_data.append(row_data)
-
-        # Create a table header row with the field names
-        header_row = ""
-        for field_name in field_names:
-          header_row += f"| {field_name} "
-        header_row += "|"
-
-        # Create the table body with filled rows
-        table_body = ""
-        for i in range(num_rows):
-          row = ""
-          for data in cell_data[i]:
-            row += f"| {data} "
-          row += "|"
-          table_body += row + "\n"
-
-        # Combine the header row and table body to form the complete table
-        table = header_row + "\n" + table_body
-
-        # Create a rich embed with the table as its description
-        embed = Embed(title="Table", description=table)
-        await message.channel.send(embed=embed)
-      elif message.content.startswith("/help"):
-        await message.channel.send(
-          "/ai for general text\n/ti for a formatted table\nformatted tables are created as follows (/ti table fields:fieldX,fieldY,fieldZ rows:x(amount of rows) )"
-        )
-
     if command == '/ai':
       context = db.get("context")
 
@@ -90,7 +47,8 @@ class MyCLient(discord.Client):
       context["previous_prompt"] = prompt
       context["previous_response"] = bot_response
       db.set("context", context)
-      await message.channel.send(f"Answer: {bot_response}")
+      await message.channel.send(
+        f"```ansi\n\Answer: {bot_response}```")
 
 
 intents = discord.Intents.default()
