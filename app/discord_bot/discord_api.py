@@ -47,8 +47,7 @@ class MyCLient(discord.Client):
       context["previous_prompt"] = prompt
       context["previous_response"] = bot_response
       db.set("context", context)
-      await message.channel.send(
-        f"```ansi\n\Answer: {bot_response}```")
+      await message.channel.send(f"```ansi\n\Answer: {bot_response}```")
 
 
 intents = discord.Intents.default()
