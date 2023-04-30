@@ -55,4 +55,6 @@ intents.message_content = True
 # print(db["context"])
 
 client = MyCLient(intents=intents)
-# Wow github please work
+
+
+#
